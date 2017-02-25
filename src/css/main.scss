@@ -1,0 +1,166 @@
+@import './resume.scss';
+
+//编译后不显示的注释
+/* 编译后会显示的注释 */
+
+//Map
+$allColors: (
+    
+	backgroundColor:rgb(34,34,34),
+    fontColor:rgb(221,221,221),
+    borderColor:rgb(221,221,221),
+	navBtnAfter:rgb(221,221,221),
+	navBtnAfterHover:rgb(102,102,153),
+    navscrollBtnHover:rgb(102,102,153)
+);
+	
+//声明带有初值的混合宏
+@mixin active-page($translateY:0%)
+{
+	transform: translateY($translateY);
+}
+    
+//伪类嵌套
+*{
+	&:before,
+	&:after{
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+}
+.nav-panel{
+
+	.nav-btn{
+
+		&:after{
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+		}
+	}
+}
+
+html, body
+{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+    color:map-get($allColors,fontColor);
+    font-family: Helvetica, Arial, "Microsoft Yahei", sans-serif;
+}
+ul,li{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+
+// 选择器嵌套
+.wrapper
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: transform 1.5s ;
+	.page
+	{
+    	position: relative;
+    	width: 100%;
+    	height: 100%;
+        border-bottom: 1px solid white;
+        background-color: map-get($allColors,backgroundColor);
+    }  
+}
+
+//for循环
+@for $i from 1 through 6{
+//插值 调用混合宏 乘法
+    .wrapper.active-page#{$i}
+    {
+        @include active-page($i*-100% + 100%);
+    }
+}   
+
+.nav-panel
+{
+	position: fixed;
+	top: 50%;
+	right: 1em;
+	@include active-page(-50%);
+	z-index: 1000;
+    will-change: transform, opacity;
+    .nav-btn
+    {
+		position: relative;
+        overflow: hidden;
+        width: 1em;
+        height: 1em;
+        margin-bottom: 0.5em;
+        border: 0.12em solid map-get($allColors,borderColor);
+        border-radius: 50%;
+        cursor: pointer;
+        will-change: border-color, transform;
+        &:after
+        {
+        	width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: translateX(-50%) translateY(-50%) scale(0.3);
+            background-color: map-get($allColors,navBtnAfter);
+            transition: transform, opacity 0.3s;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+    }
+    .nav-btn.active
+    {
+		&:after
+		{
+            transform: translateX(-50%) translateY(-50%) scale(0.7);
+            opacity: 1;
+		}
+    }
+    .nav-btn:hover
+    {
+    	border-color: map-get($allColors,navscrollBtnHover);
+        transform: scale(1.2);
+        &:after
+        {	
+        	transform: translateX(-50%) translateY(-50%) scale(0.7);
+            opacity: 1;
+        	background-color: map-get($allColors,navBtnAfterHover);
+        }
+    }
+    .scroll-btn
+    {   
+		position: absolute;
+        left: 0;
+        width: 1em;
+        height: 1em;
+        border: 0.2em solid map-get($allColors,borderColor);
+        border-left: none;
+        border-bottom: none;
+        cursor: pointer;
+        transform-origin: 50% 50%;
+        transition: border-color 0.3s;
+    }
+    .scroll-btn.up
+    {
+    	top: -1.6em;
+        transform: rotate(-45deg);
+    }
+    .scroll-btn.down
+    {
+    	bottom: -1.2em;
+    	transform: rotate(135deg);
+    }
+    .scroll-btn:hover
+    {
+    	border-color: map-get($allColors,navscrollBtnHover);
+    }
+
+}

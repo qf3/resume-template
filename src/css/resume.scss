@@ -1,0 +1,93 @@
+// @import './main.scss';
+
+/* 继承 占位符% */
+
+%page{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+%componentsWidth{
+	width: 90vw;
+	margin:0 auto;
+}
+
+
+.page{
+
+	@extend %page;
+	h1{
+		text-align: center;
+		@extend %componentsWidth;
+		margin-bottom: 2em;
+	}
+}
+.pageContent{
+	@extend %page;
+	.hasTimePeriod{
+		display: flex;
+		justify-content: space-around;
+		@extend %componentsWidth;
+		@for $i from 3 through 5{
+			.page#{$i}Detail{
+				width: 40vw;
+			}
+		}
+	}   
+}
+
+@media screen and (max-width:600px){
+
+	html,body{
+		font-size:0.8em;
+	}
+	.page{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		h1{
+			text-align: center;
+			width: 80vw;
+			margin:0 auto;
+			margin-bottom: 2em;
+		}
+	}
+	.pageContent{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		.hasTimePeriod{
+			display: flex;
+			justify-content: space-around;
+			width: 80vw;
+			margin:0 auto;
+			@for $i from 3 through 5{
+				.page#{$i}Detail{
+					width: 40vw;
+				}
+			}
+		}   
+	}
+}
+
+@media screen and (max-width:375px){
+	html,body{
+		font-size:0.7em;
+	}
+}
+
+/* iPone 6 Plus Landscape Only */
+@media screen and (max-width:736px) and (max-height:414px){
+	html,body{
+		font-size:0.8em;
+	}
+}
+/* iPone 5 Landscape */
+@media screen and (max-width:568px) and (max-height:320px){
+	html,body{
+		font-size:0.7em;
+	}
+}
